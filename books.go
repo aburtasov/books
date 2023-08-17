@@ -1,12 +1,14 @@
-package books
+package book
 
 type Author struct {
-	FirstName  string
-	SecondName string
+	Id         int    `db:"id"`
+	FirstName  string `db:"first_name"`
+	SecondName string `db:"second_name"`
 }
 
 type Book struct {
-	Title       string
-	Description string
-	Author      int
+	Id          int    `db:"id"`
+	Title       string `db:"title"`
+	Description string `db:"description"`
+	Author      int    `db:"author"`
 }

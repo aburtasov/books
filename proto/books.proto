@@ -6,8 +6,8 @@ option go_package = "github.com/aburtasov/books/api";
 
 service Booker {
     rpc GetBooks(Author) returns (Books) {}
-    rpc GetAuthor(Books) returns (Author) {}
-    rpc addBook(Book) returns (ResponceID) {}
+    rpc GetAuthor(Book) returns (Author) {}
+    rpc addBook(AddBook) returns (ResponceID) {}
     rpc addAuthor(Author) returns (ResponceID) {}
 }
 
@@ -16,17 +16,20 @@ message Author {
     string second_name = 2;
 }
 
-message Books {
-  repeated string title = 1;
-
-}
-
 message Book {
     string title = 1;
-    string description = 2;
-    int64 author = 3;
+}
+
+message Books {
+    repeated string title = 1;
 }
 
 message ResponceID {
     string value = 1;
+}
+
+message AddBook {
+    string title = 1;
+    string description = 2;
+    int64 author_id = 3;
 }

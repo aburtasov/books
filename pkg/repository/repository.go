@@ -3,12 +3,12 @@ package repository
 import (
 	"database/sql"
 
-	"github.com/aburtasov/books"
+	book "github.com/aburtasov/books"
 	_ "github.com/go-sql-driver/mysql"
 )
 
 type Book interface {
-	GetBooks(author books.Author) ([]string, error)
+	GetBooks(author book.Author) ([]book.Book, error)
 }
 
 type Author interface {

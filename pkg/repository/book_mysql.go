@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 
-	"github.com/aburtasov/books"
+	book "github.com/aburtasov/books"
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -16,43 +16,34 @@ func NewBookMysql(db *sql.DB) *BookMysql {
 	return &BookMysql{db: db}
 }
 
-func (r *BookMysql) GetBooks(author books.Author) ([]string, error) {
+func (r *BookMysql) GetBooks(author book.Author) ([]book.Book, error) {
 	var id int64
-	var books []string
-	fmt.Println("Дошли до сюда")
+	var bks []book.Book
+	var bok book.Book
 
-	query1 := fmt.Sprintf("SELECT id FROM %s WHERE first_name=$1 AND second_name=$2", authorsTable)
-	fmt.Println("Дошли до сюда 1")
-	result, err := r.db.Exec(query1, author.FirstName, author.SecondName)
-	if err != nil {
-		return nil, err
-	}
-	id, err = result.LastInsertId()
+	query1 := fmt.Sprintf("SELECT id FROM %s WHERE first_name='%s' AND second_name='%s'", authorsTable, author.FirstName, author.SecondName)
+
+	err := r.db.QueryRow(query1).Scan(&id)
 	if err != nil {
 		return nil, err
 	}
 
-	fmt.Println("Дошли до сюда 2")
+	query2 := fmt.Sprintf("SELECT * FROM %s WHERE author_id=%d", booksTable, id)
 
-	query2 := fmt.Sprintf("SELECT title FROM %s WHERE author_id=$1", booksTable)
-	rows, err := r.db.Query(query2, id)
+	rows, err := r.db.Query(query2)
 	if err != nil {
-		fmt.Println("Тут 3")
 		return nil, err
 	}
-
-	var book string
-
 	for rows.Next() {
 
-		err = rows.Scan(&book)
+		err = rows.Scan(&bok.Id, &bok.Title, &bok.Description, &bok.Author)
 		if err != nil {
-			fmt.Println("Тут 4")
+			fmt.Println("Тут", err)
 			return nil, fmt.Errorf("failed to scan row: %w", err)
 		}
 
-		books = append(books, book)
+		bks = append(bks, bok)
 	}
-
-	return books, nil
+	fmt.Println("ОКЕЙ")
+	return bks, nil
 }

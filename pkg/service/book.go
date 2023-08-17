@@ -1,7 +1,7 @@
 package service
 
 import (
-	"github.com/aburtasov/books"
+	book "github.com/aburtasov/books"
 	"github.com/aburtasov/books/pkg/repository"
 )
 
@@ -13,7 +13,7 @@ func NewBookService(repo repository.Book) *BookService {
 	return &BookService{repo: repo}
 }
 
-func (s *BookService) GetBooks(author books.Author) ([]string, error) {
+func (s *BookService) GetBooks(author book.Author) ([]book.Book, error) {
 	// Дополнительная логика не будет реализовываться
 	// Сразу передача в репозиторий
 	return s.repo.GetBooks(author)

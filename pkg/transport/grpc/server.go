@@ -3,8 +3,9 @@ package transport
 import (
 	"context"
 	"errors"
+	"fmt"
 
-	"github.com/aburtasov/books"
+	book "github.com/aburtasov/books"
 	"github.com/aburtasov/books/api"
 	"github.com/aburtasov/books/pkg/service"
 )
@@ -22,27 +23,44 @@ func NewGRPCServer(services service.Service) *GRPCServer {
 
 func (s *GRPCServer) GetBooks(ctx context.Context, author *api.Author) (*api.Books, error) {
 
-	var input books.Author
+	titles := make([]string, 0)
+	var input book.Author
+
 	input.FirstName = author.FirstName
 	input.SecondName = author.SecondName
 
+	if input.FirstName == "" {
+		return nil, errors.New("empty first name")
+	}
+
 	if input.SecondName == "" {
-		return &api.Books{}, errors.New("empty second name")
+		return nil, errors.New("empty second name")
 	}
 
-	books, err := s.services.Book.GetBooks(input)
+	if input.SecondName == "" && input.FirstName == "" {
+		return nil, errors.New("empty arguments")
+	}
+
+	result, err := s.services.Book.GetBooks(input)
+
 	if err != nil {
-		return &api.Books{}, errors.New("internal server error")
+		return nil, errors.New("internal server error")
 	}
 
-	return &api.Books{Title: books}, nil
+	for i := range result {
+		titles = append(titles, result[i].Title)
+	}
+
+	fmt.Println("Возврат клиенту")
+
+	return &api.Books{Title: titles}, nil
 
 }
 
-func (s *GRPCServer) GetAuthor(ctx context.Context, books *api.Books) (*api.Author, error) {
+func (s *GRPCServer) GetAuthor(ctx context.Context, book *api.Book) (*api.Author, error) {
 	return &api.Author{}, nil
 }
-func (s *GRPCServer) AddBook(ctx context.Context, books *api.Book) (*api.ResponceID, error) {
+func (s *GRPCServer) AddBook(ctx context.Context, book *api.AddBook) (*api.ResponceID, error) {
 	return &api.ResponceID{}, nil
 }
 func (s *GRPCServer) AddAuthor(ctx context.Context, author *api.Author) (*api.ResponceID, error) {

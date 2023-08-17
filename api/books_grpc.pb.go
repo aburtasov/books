@@ -23,8 +23,8 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type BookerClient interface {
 	GetBooks(ctx context.Context, in *Author, opts ...grpc.CallOption) (*Books, error)
-	GetAuthor(ctx context.Context, in *Books, opts ...grpc.CallOption) (*Author, error)
-	AddBook(ctx context.Context, in *Book, opts ...grpc.CallOption) (*ResponceID, error)
+	GetAuthor(ctx context.Context, in *Book, opts ...grpc.CallOption) (*Author, error)
+	AddBook(ctx context.Context, in *AddBook, opts ...grpc.CallOption) (*ResponceID, error)
 	AddAuthor(ctx context.Context, in *Author, opts ...grpc.CallOption) (*ResponceID, error)
 }
 
@@ -45,7 +45,7 @@ func (c *bookerClient) GetBooks(ctx context.Context, in *Author, opts ...grpc.Ca
 	return out, nil
 }
 
-func (c *bookerClient) GetAuthor(ctx context.Context, in *Books, opts ...grpc.CallOption) (*Author, error) {
+func (c *bookerClient) GetAuthor(ctx context.Context, in *Book, opts ...grpc.CallOption) (*Author, error) {
 	out := new(Author)
 	err := c.cc.Invoke(ctx, "/api.Booker/GetAuthor", in, out, opts...)
 	if err != nil {
@@ -54,7 +54,7 @@ func (c *bookerClient) GetAuthor(ctx context.Context, in *Books, opts ...grpc.Ca
 	return out, nil
 }
 
-func (c *bookerClient) AddBook(ctx context.Context, in *Book, opts ...grpc.CallOption) (*ResponceID, error) {
+func (c *bookerClient) AddBook(ctx context.Context, in *AddBook, opts ...grpc.CallOption) (*ResponceID, error) {
 	out := new(ResponceID)
 	err := c.cc.Invoke(ctx, "/api.Booker/addBook", in, out, opts...)
 	if err != nil {
@@ -77,8 +77,8 @@ func (c *bookerClient) AddAuthor(ctx context.Context, in *Author, opts ...grpc.C
 // for forward compatibility
 type BookerServer interface {
 	GetBooks(context.Context, *Author) (*Books, error)
-	GetAuthor(context.Context, *Books) (*Author, error)
-	AddBook(context.Context, *Book) (*ResponceID, error)
+	GetAuthor(context.Context, *Book) (*Author, error)
+	AddBook(context.Context, *AddBook) (*ResponceID, error)
 	AddAuthor(context.Context, *Author) (*ResponceID, error)
 	mustEmbedUnimplementedBookerServer()
 }
@@ -90,10 +90,10 @@ type UnimplementedBookerServer struct {
 func (UnimplementedBookerServer) GetBooks(context.Context, *Author) (*Books, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetBooks not implemented")
 }
-func (UnimplementedBookerServer) GetAuthor(context.Context, *Books) (*Author, error) {
+func (UnimplementedBookerServer) GetAuthor(context.Context, *Book) (*Author, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAuthor not implemented")
 }
-func (UnimplementedBookerServer) AddBook(context.Context, *Book) (*ResponceID, error) {
+func (UnimplementedBookerServer) AddBook(context.Context, *AddBook) (*ResponceID, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddBook not implemented")
 }
 func (UnimplementedBookerServer) AddAuthor(context.Context, *Author) (*ResponceID, error) {
@@ -131,7 +131,7 @@ func _Booker_GetBooks_Handler(srv interface{}, ctx context.Context, dec func(int
 }
 
 func _Booker_GetAuthor_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Books)
+	in := new(Book)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -143,13 +143,13 @@ func _Booker_GetAuthor_Handler(srv interface{}, ctx context.Context, dec func(in
 		FullMethod: "/api.Booker/GetAuthor",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BookerServer).GetAuthor(ctx, req.(*Books))
+		return srv.(BookerServer).GetAuthor(ctx, req.(*Book))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Booker_AddBook_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Book)
+	in := new(AddBook)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -161,7 +161,7 @@ func _Booker_AddBook_Handler(srv interface{}, ctx context.Context, dec func(inte
 		FullMethod: "/api.Booker/addBook",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BookerServer).AddBook(ctx, req.(*Book))
+		return srv.(BookerServer).AddBook(ctx, req.(*AddBook))
 	}
 	return interceptor(ctx, in, info, handler)
 }

@@ -11,7 +11,7 @@ CREATE TABLE books
     id          int PRIMARY KEY AUTO_INCREMENT,
     title       varchar(255) not null,
     description varchar(512),
-    author_id   int  not null unique,
+    author_id   int  not null,
     FOREIGN KEY (author_id) REFERENCES authors (id)
 
 );

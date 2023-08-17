@@ -1,12 +1,12 @@
 package service
 
 import (
-	"github.com/aburtasov/books"
+	book "github.com/aburtasov/books"
 	"github.com/aburtasov/books/pkg/repository"
 )
 
 type Book interface {
-	GetBooks(author books.Author) ([]string, error)
+	GetBooks(author book.Author) ([]book.Book, error)
 }
 
 type Author interface {
