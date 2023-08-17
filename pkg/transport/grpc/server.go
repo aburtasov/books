@@ -3,7 +3,6 @@ package transport
 import (
 	"context"
 	"errors"
-	"fmt"
 
 	"github.com/aburtasov/books"
 	"github.com/aburtasov/books/api"
@@ -12,7 +11,13 @@ import (
 
 type GRPCServer struct {
 	services service.Service
-	api.UnsafeBookerServer
+	api.UnimplementedBookerServer
+}
+
+func NewGRPCServer(services service.Service) *GRPCServer {
+	return &GRPCServer{
+		services: services,
+	}
 }
 
 func (s *GRPCServer) GetBooks(ctx context.Context, author *api.Author) (*api.Books, error) {
@@ -42,8 +47,4 @@ func (s *GRPCServer) AddBook(ctx context.Context, books *api.Book) (*api.Responc
 }
 func (s *GRPCServer) AddAuthor(ctx context.Context, author *api.Author) (*api.ResponceID, error) {
 	return &api.ResponceID{}, nil
-}
-
-func (s *GRPCServer) mustEmbedUnimplementedBookerServer() {
-	fmt.Printf("s.UnsafeBookerServer: %v\n", s.UnsafeBookerServer)
 }

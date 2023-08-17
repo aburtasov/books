@@ -1,9 +1,10 @@
 package repository
 
 import (
+	"database/sql"
 	"fmt"
 
-	"github.com/jmoiron/sqlx"
+	_ "github.com/go-sql-driver/mysql"
 )
 
 const (
@@ -17,22 +18,27 @@ type Config struct {
 	Username string
 	Password string
 	DBName   string
-	SSLMode  string
 }
 
-func NewMysqlDB(cfg Config) (*sqlx.DB, error) {
-	db, err := sqlx.Open("mysql", fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=%s",
-		cfg.Host, cfg.Port, cfg.Username, cfg.DBName, cfg.Password, cfg.SSLMode))
+func NewMysqlDB(cfg Config) (*sql.DB, error) {
+	db, err := sql.Open("mysql", dsn(cfg))
 
 	if err != nil {
+		fmt.Println("Нет подключения!")
 		return nil, err
 	}
 
 	err = db.Ping()
 	if err != nil {
+		fmt.Println("Нет пинга!")
 		return nil, err
 	}
 
+	fmt.Println("Подключение к базе все ОК!")
 	return db, nil
 
+}
+
+func dsn(cfg Config) string {
+	return fmt.Sprintf("%s:%s@tcp(%s)/%s", cfg.Username, cfg.Password, cfg.Host, cfg.DBName)
 }

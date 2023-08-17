@@ -1,8 +1,10 @@
 package repository
 
 import (
+	"database/sql"
+
 	"github.com/aburtasov/books"
-	"github.com/jmoiron/sqlx"
+	_ "github.com/go-sql-driver/mysql"
 )
 
 type Book interface {
@@ -17,7 +19,7 @@ type Repository struct {
 	Author
 }
 
-func NewRepository(db *sqlx.DB) *Repository {
+func NewRepository(db *sql.DB) *Repository {
 	return &Repository{
 		Book: NewBookMysql(db),
 	}
