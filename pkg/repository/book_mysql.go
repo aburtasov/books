@@ -38,12 +38,12 @@ func (r *BookMysql) GetBooks(author book.Author) ([]book.Book, error) {
 
 		err = rows.Scan(&bok.Id, &bok.Title, &bok.Description, &bok.Author)
 		if err != nil {
-			fmt.Println("Тут", err)
+
 			return nil, fmt.Errorf("failed to scan row: %w", err)
 		}
 
 		bks = append(bks, bok)
 	}
-	fmt.Println("ОКЕЙ")
+
 	return bks, nil
 }

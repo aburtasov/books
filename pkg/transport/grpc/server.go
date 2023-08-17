@@ -3,7 +3,6 @@ package transport
 import (
 	"context"
 	"errors"
-	"fmt"
 
 	book "github.com/aburtasov/books"
 	"github.com/aburtasov/books/api"
@@ -50,8 +49,6 @@ func (s *GRPCServer) GetBooks(ctx context.Context, author *api.Author) (*api.Boo
 	for i := range result {
 		titles = append(titles, result[i].Title)
 	}
-
-	fmt.Println("Возврат клиенту")
 
 	return &api.Books{Title: titles}, nil
 
