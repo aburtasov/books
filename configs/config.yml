@@ -2,6 +2,6 @@ port : ":8000"
 
 db :
   username : "root"
-  host : "db:3306"
+  host : "localhost:3306"
   dbname : "books"
   
