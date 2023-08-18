@@ -34,7 +34,6 @@ func NewMysqlDB(cfg Config) (*sql.DB, error) {
 		return nil, err
 	}
 
-	fmt.Println("Подключение к базе все ОК!")
 	return db, nil
 
 }

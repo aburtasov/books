@@ -3,7 +3,6 @@ package transport
 import (
 	"context"
 	"errors"
-	"fmt"
 
 	book "github.com/aburtasov/books"
 	"github.com/aburtasov/books/api"
@@ -63,17 +62,35 @@ func (s *GRPCServer) AddBook(ctx context.Context, input *api.AddBook) (*api.Resp
 	book.Author = int(input.AuthorId)
 
 	result, err := s.services.Book.AddBook(book)
-	fmt.Println("Тут!!!!!!!!!!!!!")
 	if err != nil {
 		return nil, errors.New("internal server error")
 	}
+
 	return &api.ResponceID{Value: result.Id}, nil
 }
 
 func (s *GRPCServer) GetAuthor(ctx context.Context, book *api.Book) (*api.Author, error) {
-	return &api.Author{}, nil
+
+	var input = book.Title
+
+	author, err := s.services.Author.GetAuthor(input)
+	if err != nil {
+
+		return nil, errors.New("internal server error")
+	}
+
+	return &api.Author{FirstName: author.FirstName, SecondName: author.SecondName}, nil
 }
 
 func (s *GRPCServer) AddAuthor(ctx context.Context, author *api.Author) (*api.ResponceID, error) {
-	return &api.ResponceID{}, nil
+
+	var aut book.Author
+	aut.FirstName = author.FirstName
+	aut.SecondName = author.SecondName
+
+	result, err := s.services.Author.AddAuthor(aut)
+	if err != nil {
+		return nil, errors.New("internal server error")
+	}
+	return &api.ResponceID{Value: result.Id}, nil
 }

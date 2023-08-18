@@ -13,6 +13,8 @@ type Book interface {
 }
 
 type Author interface {
+	GetAuthor(bookTitle string) (book.Author, error)
+	AddAuthor(author book.Author) (book.Responce, error)
 }
 
 type Repository struct {
@@ -22,6 +24,7 @@ type Repository struct {
 
 func NewRepository(db *sql.DB) *Repository {
 	return &Repository{
-		Book: NewBookMysql(db),
+		Book:   NewBookMysql(db),
+		Author: NewAuthorMysql(db),
 	}
 }

@@ -11,6 +11,8 @@ type Book interface {
 }
 
 type Author interface {
+	GetAuthor(bookTitle string) (book.Author, error)
+	AddAuthor(author book.Author) (book.Responce, error)
 }
 
 type Service struct {
@@ -20,6 +22,7 @@ type Service struct {
 
 func NewService(repos *repository.Repository) *Service {
 	return &Service{
-		Book: NewBookService(repos),
+		Book:   NewBookService(repos),
+		Author: NewAuthorService(repos),
 	}
 }
