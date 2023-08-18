@@ -1,5 +1,5 @@
-CREATE DATABASE book;
-use book;
+CREATE DATABASE books;
+use books;
 
 CREATE TABLE authors
 (
