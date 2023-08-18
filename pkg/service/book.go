@@ -18,3 +18,9 @@ func (s *BookService) GetBooks(author book.Author) ([]book.Book, error) {
 	// Сразу передача в репозиторий
 	return s.repo.GetBooks(author)
 }
+
+func (s *BookService) AddBook(book book.Book) (book.Responce, error) {
+	// Дополнительная логика не будет реализовываться
+	// Сразу передача в репозиторий
+	return s.repo.AddBook(book)
+}

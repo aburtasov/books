@@ -3,6 +3,7 @@ package repository
 import (
 	"database/sql"
 	"fmt"
+	"strconv"
 
 	book "github.com/aburtasov/books"
 	_ "github.com/go-sql-driver/mysql"
@@ -46,4 +47,30 @@ func (r *BookMysql) GetBooks(author book.Author) ([]book.Book, error) {
 	}
 
 	return bks, nil
+}
+
+func (r *BookMysql) AddBook(bk book.Book) (book.Responce, error) {
+
+	var id int
+
+	tx, err := r.db.Begin()
+	if err != nil {
+		return book.Responce{}, err
+	}
+	query1 := fmt.Sprintf("INSERT INTO %s (title, description,author_id) VALUES ('%s','%s','%d')", booksTable, bk.Title, bk.Description, bk.Author)
+
+	tx.QueryRow(query1)
+
+	err = tx.QueryRow("SELECT LAST_INSERT_ID();").Scan(&id)
+	if err != nil {
+		tx.Rollback()
+		return book.Responce{}, err
+	}
+
+	tx.Commit()
+
+	strId := strconv.Itoa(id)
+
+	return book.Responce{Id: strId}, nil
+
 }

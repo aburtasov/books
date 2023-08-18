@@ -16,6 +16,7 @@ import (
 )
 
 func main() {
+	////////////////////////CONFIG INIT//////////////////////////////////////////////////
 
 	if err := initConfig(); err != nil {
 		logrus.Fatalf("error initializing configs: %s ", err.Error())
@@ -25,7 +26,7 @@ func main() {
 		logrus.Fatalf("error loading env variables: %s", err.Error())
 	}
 
-	///////////////////////////////////////////////
+	//////////////////////////MYSQL DB INIT////////////////////////////////////////////////
 
 	db, err := repository.NewMysqlDB(repository.Config{
 		Host:     viper.GetString("db.host"),
@@ -37,8 +38,12 @@ func main() {
 		logrus.Fatalf("Failed to initialized db: %s", err.Error())
 	}
 
+	//////////////////////////Iinit Service and Repository///////////////////////////////
+
 	repos := repository.NewRepository(db)
 	services := service.NewService(repos)
+
+	//////////////////////////GRPC Server. Init and Run//////////////////////////////////
 
 	s := grpc.NewServer()
 	srv := transport.NewGRPCServer(*services)

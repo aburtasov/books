@@ -9,6 +9,7 @@ import (
 
 type Book interface {
 	GetBooks(author book.Author) ([]book.Book, error)
+	AddBook(book book.Book) (book.Responce, error)
 }
 
 type Author interface {

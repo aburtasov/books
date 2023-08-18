@@ -12,3 +12,7 @@ type Book struct {
 	Description string `db:"description"`
 	Author      int    `db:"author"`
 }
+
+type Responce struct {
+	Id string
+}
