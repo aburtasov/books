@@ -7,8 +7,6 @@ services:
       - 8000:8000
     depends_on:
       - db
-    links: 
-      - db
     environment:
       - DB_PASSWORD=root
 
