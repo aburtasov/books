@@ -50,7 +50,7 @@ func main() {
 
 	api.RegisterBookerServer(s, srv)
 
-	l, err := net.Listen("tcp", ":8080")
+	l, err := net.Listen("tcp", viper.GetString("port"))
 	if err != nil {
 		log.Fatal(err)
 	}
