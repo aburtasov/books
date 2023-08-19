@@ -19,8 +19,8 @@ CREATE TABLE books
 
 );
 
-INSERT INTO authors (first_name,second_name) VALUES ("Федор","Достоевский"), ("Лев","Толстой"), ("Антон","Чехов");
+INSERT INTO authors (first_name,second_name) VALUES ("Leo","Tolstoy"), ("Anton","Chekhov"), ("Fedor","Dostoevsky");
 
 INSERT INTO books (title,description,author_id) 
-VALUES ("Преступление и наказание","Про преступление и наказание",1),
-("Война и мир","Про войну и мир",2), ("Каштанка","Про собачку",3);
+VALUES ("War and Peace","About war and peace",1),
+("Ward No. 6","About Ward No. 6",2), ("The Brothers Karamazov","About brothers",3);
