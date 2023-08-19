@@ -4,6 +4,8 @@ import (
 	"log"
 	"net"
 	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/aburtasov/books/api"
 	"github.com/aburtasov/books/pkg/repository"
@@ -58,6 +60,14 @@ func main() {
 	if err := s.Serve(l); err != nil {
 		log.Fatal(err)
 	}
+
+	//////////////////////////Graceful Shutdown///////////////////////////////
+
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, syscall.SIGTERM, syscall.SIGINT)
+	<-quit
+
+	s.GracefulStop()
 }
 
 func initConfig() error {
