@@ -29,7 +29,7 @@ func main() {
 	//////////////////////////MYSQL DB INIT////////////////////////////////////////////////
 
 	db, err := repository.NewMysqlDB(repository.Config{
-		Host:     viper.GetString("db.host"),
+		Host:     os.Getenv("DB_HOST"),
 		Username: viper.GetString("db.username"),
 		Password: os.Getenv("DB_PASSWORD"),
 		DBName:   viper.GetString("db.dbname"),
