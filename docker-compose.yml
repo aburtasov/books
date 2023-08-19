@@ -9,6 +9,8 @@ services:
       - db
     environment:
       - DB_PASSWORD=root
+    networks:
+      - books-network
 
   db:
     build:
@@ -18,7 +20,11 @@ services:
       - MYSQL_ROOT_PASSWORD=root
     ports:
       - 3306:3306
+    networks:
+      books-network:
+          aliases:
+            - db
 
 networks:
-  my-network:
+  books-network:
     driver: "bridge"
