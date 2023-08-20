@@ -1,5 +1,10 @@
 ## Books-app для создания и хранения книг и авторов в БД
 
+### Prerequisites:
+* docker
+* docker-compose
+* make
+
 ### Для запуска приложения:
 ``` sudo make build ```
 
