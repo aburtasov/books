@@ -1,18 +1,28 @@
 version: '3.8'
 
 services:
+  # Book app.
   book-app:
     build: ./
     ports:
       - 8000:8000
     depends_on:
-      db:
-         condition: service_started
+      - check-db-started
     environment:
       - DB_PASSWORD=root
     networks:
       - books-network
 
+  # Wait for Mysql to be joinable.
+  check-db-started: 
+    image: jwilder/dockerize:0.6.1
+    depends_on:
+      - db
+    command: 'dockerize -wait=tcp://db:3306'
+    networks:
+      - books-network
+
+  # Mysql with test data.
   db:
     build:
       context: ./database
