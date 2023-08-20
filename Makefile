@@ -1,7 +1,4 @@
 build:
-	docker-compose up -d
-
-book:
 	docker-compose build book-app
 
 run:
