@@ -8,7 +8,7 @@
 ### For run application:
 ``` sudo make build ```
 
- GRPC-server will start and DB MYSQL with test data (see directory database)
+ GRPC-server will start and also DB MYSQL will start with test data (see directory database)
 
 #### As client-app you can use [evans](https://github.com/ktr0731/evans).
 
