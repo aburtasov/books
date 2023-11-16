@@ -1,21 +1,21 @@
-## Books-app для создания и хранения книг и авторов в БД
+## Books-app for create and store books and authors in Database
 
 ### Prerequisites:
 * docker
 * docker-compose
 * make
 
-### Для запуска приложения:
+### For run application:
 ``` sudo make build ```
 
-Запустится GRPC-сервер и БД MYSQL с тестовыми данными (смотреть директорию database)
+ GRPC-server will start and DB MYSQL with test data (see directory database)
 
-#### В качестве клиента можно использовать [evans](https://github.com/ktr0731/evans).
+#### As client-app you can use [evans](https://github.com/ktr0731/evans).
 
-#### Запустите evans в директории проекта:
+#### Run evans in project directory:
 ``` evans proto/books.proto -p 8000 ```
 
-##### Доступно 4 метода для вызова:
+##### Available 4 methods for call:
 * addBook
 * addAuthor
 * GetBooks
